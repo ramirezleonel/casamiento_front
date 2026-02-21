@@ -3,6 +3,7 @@ import { Container, Box, Typography, ThemeProvider, createTheme, CssBaseline } f
 import Countdown from './components/Countdown';
 import PhotoCarousel from './components/PhotoCarousel';
 import DonationQR from './components/DonationQR';
+import WeddingGallery from './components/WeddingGallery';
 import { motion } from 'framer-motion';
 
 const theme = createTheme({
@@ -83,6 +84,9 @@ function App() {
             </Typography>
             <PhotoCarousel />
           </Box>
+
+          {/* New Wedding Gallery Section */}
+          <WeddingGallery />
 
           {/* Donation Section */}
           <DonationQR />

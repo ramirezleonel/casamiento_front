@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Typography, Paper } from '@mui/material';
 import { QRCodeSVG } from 'qrcode.react';
 import { Heart } from 'lucide-react';
+import TextGold from './TextGold';
 
 const DonationQR = () => {
     // Mock donation link or crypto address or bank info
@@ -17,12 +18,12 @@ const DonationQR = () => {
             px: 2
         }}>
             <Paper className="glass-card" sx={{
-                p: 4,
+                p: 2,
                 textAlign: 'center',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                maxWidth: '400px',
+                maxWidth: '500px',
                 width: '100%'
             }}>
                 <Heart color="var(--primary-gold)" size={48} style={{ marginBottom: '16px' }} />
@@ -48,6 +49,33 @@ const DonationQR = () => {
                     />
                 </Box>
 
+                <TextGold value={"Leo"} />
+
+                <Typography variant="caption" sx={{ color: 'var(--text-muted)' }}>
+                    Alias: leo.ramirez.mati.mp
+                </Typography>
+                <Typography variant="caption" sx={{ color: 'var(--text-muted)' }}>
+                    Nombre: Leonel Matias Ramirez
+                </Typography>
+                <Typography variant="caption" sx={{ color: 'var(--text-muted)' }}>
+                    CVU: 0000003100020350649566
+                </Typography>
+                <Box sx={{
+                    p: 2,
+                    background: 'white',
+                    borderRadius: '15px',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+                    mb: 2
+                }}>
+                    <QRCodeSVG
+                        value={donationValue}
+                        size={200}
+                        fgColor="var(--text-dark)"
+                        includeMargin={true}
+                    />
+                </Box>
+
+                <TextGold value={"Karen"} />
                 <Typography variant="caption" sx={{ color: 'var(--text-muted)' }}>
                     ¡Muchas gracias por ser parte de nuestra historia!
                 </Typography>
