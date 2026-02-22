@@ -77,13 +77,6 @@ const Home = () => {
                 <Box id="regalos" sx={{ mt: 10 }}>
                     <DonationQR />
                 </Box>
-
-                {/* Footer */}
-                <Box sx={{ textAlign: 'center', pb: 4 }}>
-                    <Typography variant="body2" sx={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>
-                        Eclesiastés 4:12 (NVI): Uno solo puede ser vencido,pero dos pueden resistir. ¡La cuerda de tres hilos no se rompe fácilmente!
-                    </Typography>
-                </Box>
             </Container>
         </Box>
     );

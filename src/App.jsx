@@ -6,6 +6,7 @@ import { MessageProvider } from './context/MessageContext';
 import Home from './pages/Home';
 import GalleryPage from './pages/GalleryPage';
 import MessagesPage from './pages/MessagesPage';
+import Footer from './components/Footer';
 
 const theme = createTheme({
   palette: {
@@ -37,6 +38,7 @@ function App() {
               <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/messages" element={<MessagesPage />} />
             </Routes>
+            <Footer />
           </Router>
         </MessageProvider>
       </PhotoProvider>
