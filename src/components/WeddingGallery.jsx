@@ -135,7 +135,7 @@ const WeddingGallery = () => {
                                                     pointerEvents: 'none'
                                                 }}>
                                                     <Typography variant="body2" sx={{ fontWeight: 500, opacity: 0.9 }}>
-                                                        {photo.author ? `Por ${photo.author}` : 'Momento mágico'}
+                                                        {photo.author ? `Por ${photo.author}` : 'Momentos'}
                                                     </Typography>
                                                 </Box>
                                             </Box>

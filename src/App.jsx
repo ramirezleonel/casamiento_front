@@ -2,6 +2,7 @@ import React from 'react';
 import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { PhotoProvider } from './context/PhotoContext';
+import { MessageProvider } from './context/MessageContext';
 import Home from './pages/Home';
 import GalleryPage from './pages/GalleryPage';
 
@@ -28,12 +29,14 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <PhotoProvider>
-        <Router>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/gallery" element={<GalleryPage />} />
-          </Routes>
-        </Router>
+        <MessageProvider>
+          <Router>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/gallery" element={<GalleryPage />} />
+            </Routes>
+          </Router>
+        </MessageProvider>
       </PhotoProvider>
     </ThemeProvider>
   );

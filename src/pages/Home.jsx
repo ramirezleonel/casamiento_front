@@ -3,13 +3,14 @@ import { Container, Box, Typography } from '@mui/material';
 import Countdown from '../components/Countdown';
 import PhotoCarousel from '../components/PhotoCarousel';
 import WeddingGallery from '../components/WeddingGallery';
+import GuestMessages from '../components/GuestMessages';
 import DonationQR from '../components/DonationQR';
 import { motion } from 'framer-motion';
 
 const MotionDiv = motion.div;
 
 const Home = () => {
-    const weddingDate = "2026-04-11T18:00:00";
+    const weddingDate = "2026-04-11T10:00:00";
 
     return (
         <Box sx={{ minHeight: '100vh', py: 8 }}>
@@ -69,8 +70,13 @@ const Home = () => {
                 {/* New Wedding Gallery Section */}
                 <WeddingGallery />
 
-                {/* Donation Section */}
-                <DonationQR />
+                {/* Guest Messages Section */}
+                <GuestMessages />
+
+                {/* Gift Section / Donation QR */}
+                <Box id="regalos" sx={{ mt: 10 }}>
+                    <DonationQR />
+                </Box>
 
                 {/* Footer */}
                 <Box sx={{ textAlign: 'center', pb: 4 }}>
