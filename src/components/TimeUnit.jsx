@@ -3,8 +3,10 @@ import { Box, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 import TextGold from './TextGold';
 
+const MotionDiv = motion.div;
+
 const TimeUnit = ({ value, label }) => (
-    <motion.div
+    <MotionDiv
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -35,7 +37,7 @@ const TimeUnit = ({ value, label }) => (
                 {label}
             </Typography>
         </Box>
-    </motion.div>
+    </MotionDiv>
 );
 
 export default TimeUnit;

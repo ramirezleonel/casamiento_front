@@ -13,6 +13,8 @@ import {
 import { X, Upload, Image as ImageIcon, Camera } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const MotionDiv = motion.div;
+
 const UploadModal = ({ open, onClose, onUploadSuccess }) => {
     const [dragActive, setDragActive] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
@@ -77,7 +79,6 @@ const UploadModal = ({ open, onClose, onUploadSuccess }) => {
 
         setIsUploading(true);
 
-        // Mocking a backend upload call
         try {
             // Here you would normally use FormData and fetch/axios
             // const formData = new FormData();
@@ -134,7 +135,7 @@ const UploadModal = ({ open, onClose, onUploadSuccess }) => {
             <DialogContent sx={{ p: 3 }}>
                 <AnimatePresence mode="wait">
                     {!previewUrl ? (
-                        <motion.div
+                        <MotionDiv
                             key="uploader"
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -204,9 +205,9 @@ const UploadModal = ({ open, onClose, onUploadSuccess }) => {
                             >
                                 Abrir Galería
                             </Button>
-                        </motion.div>
+                        </MotionDiv>
                     ) : (
-                        <motion.div
+                        <MotionDiv
                             key="preview"
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
@@ -283,7 +284,7 @@ const UploadModal = ({ open, onClose, onUploadSuccess }) => {
                                     Compartir Foto
                                 </Button>
                             </Box>
-                        </motion.div>
+                        </MotionDiv>
                     )}
                 </AnimatePresence>
             </DialogContent>

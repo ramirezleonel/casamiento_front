@@ -49,7 +49,7 @@ const DonationQR = () => {
                     />
                 </Box>
 
-                <TextGold value={"Karen"} fontSize={{ xs: '1rem', sm: '2rem' }} />
+                <TextGold value={"Leo"} fontSize={{ xs: '1rem', sm: '2rem' }} />
 
                 <Typography variant="caption" sx={{ color: 'var(--text-muted)' }}>
                     Alias: leo.ramirez.mati.mp  <br /> Nombre: Leonel Matias Ramirez <br /> CVU: 0000003100020350649566
