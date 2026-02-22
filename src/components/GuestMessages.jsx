@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { Box, Typography, Button, Container, Grid, Card } from '@mui/material';
-import { MessageSquare, MessagesSquare, Quote } from 'lucide-react';
+import { MessagesSquare, Quote, ChevronRight, MessageSquare } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMessages } from '../context/MessageContext';
 import MessageModal from './MessageModal';
-import { PhotoAlbum } from '@mui/icons-material';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const MotionDiv = motion.div;
 
 const GuestMessages = () => {
     const { messages, addMessage } = useMessages();
+    const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
@@ -37,7 +37,7 @@ const GuestMessages = () => {
                         <Button
                             variant="outlined"
                             startIcon={<MessagesSquare size={20} />}
-                            onClick={() => Navigate('/gallery')}
+                            onClick={() => navigate('/messages')}
                             sx={{
                                 color: 'var(--primary-gold)',
                                 borderColor: 'var(--primary-gold)',
@@ -77,7 +77,7 @@ const GuestMessages = () => {
 
                 <Grid container spacing={3}>
                     <AnimatePresence>
-                        {messages.map((msg, index) => (
+                        {messages.slice(0, 6).map((msg, index) => (
                             <Grid item xs={12} sm={6} md={4} key={msg.id}>
                                 <MotionDiv
                                     initial={{ opacity: 0, y: 20 }}
@@ -115,7 +115,8 @@ const GuestMessages = () => {
                                             pt: 2,
                                             fontStyle: 'italic',
                                             lineHeight: 1.6,
-                                            color: 'var(--text-dark)'
+                                            color: 'var(--text-dark)',
+                                            whiteSpace: 'pre-wrap'
                                         }}>
                                             "{msg.content}"
                                         </Typography>
@@ -124,13 +125,6 @@ const GuestMessages = () => {
                                             <Typography variant="subtitle1" sx={{ fontWeight: 700, color: 'var(--primary-gold)' }}>
                                                 {msg.author}
                                             </Typography>
-                                            <Typography variant="caption" sx={{ color: 'var(--text-muted)' }}>
-                                                {new Date(msg.timestamp).toLocaleDateString('es-AR', {
-                                                    day: 'numeric',
-                                                    month: 'long',
-                                                    year: 'numeric'
-                                                })}
-                                            </Typography>
                                         </Box>
                                     </Card>
                                 </MotionDiv>
@@ -138,6 +132,18 @@ const GuestMessages = () => {
                         ))}
                     </AnimatePresence>
                 </Grid>
+
+                {messages.length > 6 && (
+                    <Box sx={{ textAlign: 'center', mt: 4 }}>
+                        <Button
+                            onClick={() => navigate('/messages')}
+                            endIcon={<ChevronRight size={18} />}
+                            sx={{ color: 'var(--primary-gold)', fontWeight: 600, textTransform: 'none' }}
+                        >
+                            Ver todos los mensajes ({messages.length})
+                        </Button>
+                    </Box>
+                )}
 
                 {messages.length === 0 && (
                     <Box sx={{ textAlign: 'center', py: 8 }}>

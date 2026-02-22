@@ -20,7 +20,7 @@ const MessageModal = ({ open, onClose, onMessageAdded }) => {
     const [content, setContent] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const maxLength = 300;
+    const maxLength = 500;
 
     const resetState = () => {
         setAuthor('');
