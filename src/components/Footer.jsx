@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography, Container } from '@mui/material';
 import { motion } from 'framer-motion';
-import recienCasadosImg from '../assets/photos/recien_casados-preview.png';
+import recienCasadosImg from '../assets/photos/recien_casados-animation.png';
 
 const MotionBox = motion(Box);
 
@@ -57,7 +57,7 @@ const Footer = () => {
                     }}
                     transition={{
                         x: {
-                            duration: 15,
+                            duration: 14,
                             repeat: Infinity,
                             ease: "linear"
                         },
