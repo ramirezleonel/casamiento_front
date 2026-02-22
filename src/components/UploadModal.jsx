@@ -8,17 +8,19 @@ import {
     Box,
     Typography,
     CircularProgress,
-    Fade
+    Grid,
+    Card,
+    CardMedia
 } from '@mui/material';
-import { X, Upload, Image as ImageIcon, Camera } from 'lucide-react';
+import { X, Upload, Camera, Trash2, Plus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const MotionDiv = motion.div;
 
 const UploadModal = ({ open, onClose, onUploadSuccess }) => {
     const [dragActive, setDragActive] = useState(false);
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [previewUrl, setPreviewUrl] = useState(null);
+    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [previews, setPreviews] = useState([]);
     const [isUploading, setIsUploading] = useState(false);
 
     const handleDrag = useCallback((e) => {
@@ -31,38 +33,52 @@ const UploadModal = ({ open, onClose, onUploadSuccess }) => {
         }
     }, []);
 
-    const handleFile = (file) => {
-        if (file && file.type.startsWith('image/')) {
-            setSelectedFile(file);
+    const processFiles = (files) => {
+        const fileList = Array.from(files);
+        const validFiles = fileList.filter(file => file.type.startsWith('image/'));
+
+        if (validFiles.length + selectedFiles.length > 15) {
+            alert("Solo puedes subir un máximo de 15 fotos.");
+            return;
+        }
+
+        const newPreviews = [];
+        validFiles.forEach(file => {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setPreviewUrl(reader.result);
+                setPreviews(prev => [...prev, reader.result]);
             };
             reader.readAsDataURL(file);
-        }
+            newPreviews.push(file);
+        });
+
+        setSelectedFiles(prev => [...prev, ...validFiles]);
     };
 
     const handleDrop = useCallback((e) => {
         e.preventDefault();
         e.stopPropagation();
         setDragActive(false);
-        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-            const file = e.dataTransfer.files[0];
-            handleFile(file);
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            processFiles(e.dataTransfer.files);
         }
-    }, []);
+    }, [selectedFiles]);
 
     const handleChange = (e) => {
         e.preventDefault();
-        if (e.target.files && e.target.files[0]) {
-            const file = e.target.files[0];
-            handleFile(file);
+        if (e.target.files && e.target.files.length > 0) {
+            processFiles(e.target.files);
         }
     };
 
+    const removeFile = (index) => {
+        setSelectedFiles(prev => prev.filter((_, i) => i !== index));
+        setPreviews(prev => prev.filter((_, i) => i !== index));
+    };
+
     const resetState = () => {
-        setSelectedFile(null);
-        setPreviewUrl(null);
+        setSelectedFiles([]);
+        setPreviews([]);
         setIsUploading(false);
         setDragActive(false);
     };
@@ -75,23 +91,22 @@ const UploadModal = ({ open, onClose, onUploadSuccess }) => {
     };
 
     const handleUpload = async () => {
-        if (!selectedFile) return;
+        if (selectedFiles.length === 0) return;
 
         setIsUploading(true);
 
         try {
-            // Here you would normally use FormData and fetch/axios
-            // const formData = new FormData();
-            // formData.append('photo', selectedFile);
-            // await axios.post('/api/upload', formData);
+            // Simulate upload for each file
+            for (let i = 0; i < selectedFiles.length; i++) {
+                // Here you would normally upload each file to your backend
+                await new Promise(resolve => setTimeout(resolve, 500));
 
-            await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate delay
-
-            onUploadSuccess({
-                id: Date.now(),
-                url: previewUrl,
-                timestamp: new Date().toISOString()
-            });
+                onUploadSuccess({
+                    id: Date.now() + i,
+                    url: previews[i],
+                    timestamp: new Date().toISOString()
+                });
+            }
 
             handleClose();
         } catch (error) {
@@ -105,7 +120,7 @@ const UploadModal = ({ open, onClose, onUploadSuccess }) => {
             open={open}
             onClose={handleClose}
             fullWidth
-            maxWidth="sm"
+            maxWidth="md"
             PaperProps={{
                 className: 'glass-card',
                 sx: {
@@ -118,7 +133,7 @@ const UploadModal = ({ open, onClose, onUploadSuccess }) => {
         >
             <DialogTitle sx={{ m: 0, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Typography variant="h5" sx={{ fontWeight: 600, color: 'var(--text-dark)' }}>
-                    Subir Foto de la Boda
+                    Subir Fotos de la Boda ({selectedFiles.length}/15)
                 </Typography>
                 <IconButton
                     aria-label="close"
@@ -134,7 +149,7 @@ const UploadModal = ({ open, onClose, onUploadSuccess }) => {
 
             <DialogContent sx={{ p: 3 }}>
                 <AnimatePresence mode="wait">
-                    {!previewUrl ? (
+                    {selectedFiles.length === 0 ? (
                         <MotionDiv
                             key="uploader"
                             initial={{ opacity: 0, y: 10 }}
@@ -148,7 +163,7 @@ const UploadModal = ({ open, onClose, onUploadSuccess }) => {
                                 position: 'relative',
                                 border: dragActive ? '2px dashed var(--primary-gold)' : '2px dashed #ddd',
                                 borderRadius: '20px',
-                                padding: '40px 20px',
+                                padding: '60px 20px',
                                 textAlign: 'center',
                                 backgroundColor: dragActive ? 'rgba(197, 160, 89, 0.05)' : 'transparent',
                                 transition: 'all 0.3s ease',
@@ -160,6 +175,7 @@ const UploadModal = ({ open, onClose, onUploadSuccess }) => {
                                 id="file-upload"
                                 type="file"
                                 accept="image/*"
+                                multiple
                                 style={{ display: 'none' }}
                                 onChange={handleChange}
                             />
@@ -181,10 +197,10 @@ const UploadModal = ({ open, onClose, onUploadSuccess }) => {
                             </Box>
 
                             <Typography variant="h6" sx={{ fontWeight: 500, mb: 1 }}>
-                                Arrastra tu foto aquí
+                                Arrastra tus fotos aquí (máx. 15)
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                                O haz clic para seleccionar una de tu galería
+                                O haz clic para seleccionar de tu galería
                             </Typography>
 
                             <Button
@@ -211,50 +227,75 @@ const UploadModal = ({ open, onClose, onUploadSuccess }) => {
                             key="preview"
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            style={{ textAlign: 'center' }}
                         >
-                            <Box sx={{
-                                position: 'relative',
-                                width: '100%',
-                                maxHeight: '400px',
-                                borderRadius: '16px',
-                                overflow: 'hidden',
-                                mb: 3,
-                                boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
-                            }}>
-                                <img
-                                    src={previewUrl}
-                                    alt="Preview"
-                                    style={{
-                                        width: '100%',
-                                        height: 'auto',
-                                        display: 'block',
-                                        maxHeight: '400px',
-                                        objectFit: 'contain'
-                                    }}
-                                />
-
-                                {isUploading && (
-                                    <Box sx={{
-                                        position: 'absolute',
-                                        top: 0,
-                                        left: 0,
-                                        right: 0,
-                                        bottom: 0,
-                                        backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        backdropFilter: 'blur(4px)'
-                                    }}>
-                                        <CircularProgress color="primary" sx={{ mb: 2 }} />
-                                        <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                                            Subiendo momento mágico...
-                                        </Typography>
-                                    </Box>
+                            <Grid container spacing={2} sx={{ mb: 3, maxHeight: '400px', overflowY: 'auto', p: 1 }}>
+                                {previews.map((url, index) => (
+                                    <Grid item xs={4} sm={3} key={index}>
+                                        <Card sx={{ position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                                            <CardMedia
+                                                component="img"
+                                                height="100"
+                                                image={url}
+                                                sx={{ objectFit: 'cover' }}
+                                            />
+                                            {!isUploading && (
+                                                <IconButton
+                                                    size="small"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        removeFile(index);
+                                                    }}
+                                                    sx={{
+                                                        position: 'absolute',
+                                                        top: 4,
+                                                        right: 4,
+                                                        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                                        '&:hover': { backgroundColor: 'white', color: 'red' }
+                                                    }}
+                                                >
+                                                    < Trash2 size={14} />
+                                                </IconButton>
+                                            )}
+                                        </Card>
+                                    </Grid>
+                                ))}
+                                {selectedFiles.length < 15 && !isUploading && (
+                                    <Grid item xs={4} sm={3}>
+                                        <Box
+                                            onClick={() => document.getElementById('file-upload-more').click()}
+                                            sx={{
+                                                height: '100px',
+                                                border: '2px dashed #ddd',
+                                                borderRadius: '12px',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                cursor: 'pointer',
+                                                '&:hover': { borderColor: 'var(--primary-gold)', color: 'var(--primary-gold)' }
+                                            }}
+                                        >
+                                            <Plus size={24} />
+                                            <input
+                                                id="file-upload-more"
+                                                type="file"
+                                                accept="image/*"
+                                                multiple
+                                                style={{ display: 'none' }}
+                                                onChange={handleChange}
+                                            />
+                                        </Box>
+                                    </Grid>
                                 )}
-                            </Box>
+                            </Grid>
+
+                            {isUploading && (
+                                <Box sx={{ textAlign: 'center', mb: 3 }}>
+                                    <CircularProgress size={24} sx={{ mb: 1 }} />
+                                    <Typography variant="body2">
+                                        Subiendo tus momentos mágicos...
+                                    </Typography>
+                                </Box>
+                            )}
 
                             <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center' }}>
                                 <Button
@@ -265,7 +306,7 @@ const UploadModal = ({ open, onClose, onUploadSuccess }) => {
                                         textTransform: 'none'
                                     }}
                                 >
-                                    Cambiar foto
+                                    Limpiar todo
                                 </Button>
                                 <Button
                                     variant="contained"
@@ -281,7 +322,7 @@ const UploadModal = ({ open, onClose, onUploadSuccess }) => {
                                         boxShadow: '0 4px 14px rgba(197, 160, 89, 0.4)'
                                     }}
                                 >
-                                    Compartir Foto
+                                    Compartir {selectedFiles.length} {selectedFiles.length === 1 ? 'Foto' : 'Fotos'}
                                 </Button>
                             </Box>
                         </MotionDiv>
