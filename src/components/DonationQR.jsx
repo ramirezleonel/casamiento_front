@@ -23,7 +23,7 @@ const DonationQR = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                maxWidth: '500px',
+                maxWidth: '1500px',
                 width: '100%'
             }}>
                 <Heart color="var(--primary-gold)" size={48} style={{ marginBottom: '16px' }} />
@@ -49,17 +49,12 @@ const DonationQR = () => {
                     />
                 </Box>
 
-                <TextGold value={"Leo"} />
+                <TextGold value={"Karen"} fontSize={{ xs: '1rem', sm: '2rem' }} />
 
                 <Typography variant="caption" sx={{ color: 'var(--text-muted)' }}>
-                    Alias: leo.ramirez.mati.mp
+                    Alias: leo.ramirez.mati.mp  <br /> Nombre: Leonel Matias Ramirez <br /> CVU: 0000003100020350649566
                 </Typography>
-                <Typography variant="caption" sx={{ color: 'var(--text-muted)' }}>
-                    Nombre: Leonel Matias Ramirez
-                </Typography>
-                <Typography variant="caption" sx={{ color: 'var(--text-muted)' }}>
-                    CVU: 0000003100020350649566
-                </Typography>
+
                 <Box sx={{
                     p: 2,
                     background: 'white',
@@ -75,8 +70,12 @@ const DonationQR = () => {
                     />
                 </Box>
 
-                <TextGold value={"Karen"} />
+                <TextGold value={"Karen"} fontSize={{ xs: '1rem', sm: '2rem' }} />
                 <Typography variant="caption" sx={{ color: 'var(--text-muted)' }}>
+                    Alias: leo.ramirez.mati.mp  <br /> Nombre: Leonel Matias Ramirez <br /> CVU: 0000003100020350649566
+                </Typography>
+
+                <Typography variant="caption" sx={{ color: 'var(--text-muted)', mt: 2 }}>
                     ¡Muchas gracias por ser parte de nuestra historia!
                 </Typography>
             </Paper>
