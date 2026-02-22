@@ -112,17 +112,33 @@ const WeddingGallery = () => {
                                                 transition: 'all 0.3s ease'
                                             }
                                         }}>
-                                            <CardMedia
-                                                component="img"
-                                                height="350"
-                                                image={photo.url}
-                                                alt="Wedding memory"
-                                                sx={{
-                                                    objectFit: 'cover',
-                                                    cursor: 'zoom-in'
-                                                }}
-                                                onClick={() => openLightbox(index)}
-                                            />
+                                            <Box sx={{ position: 'relative' }}>
+                                                <CardMedia
+                                                    component="img"
+                                                    height="350"
+                                                    image={photo.url}
+                                                    alt="Wedding memory"
+                                                    sx={{
+                                                        objectFit: 'cover',
+                                                        cursor: 'zoom-in'
+                                                    }}
+                                                    onClick={() => openLightbox(index)}
+                                                />
+                                                <Box sx={{
+                                                    position: 'absolute',
+                                                    bottom: 0,
+                                                    left: 0,
+                                                    right: 0,
+                                                    p: 2,
+                                                    background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
+                                                    color: 'white',
+                                                    pointerEvents: 'none'
+                                                }}>
+                                                    <Typography variant="body2" sx={{ fontWeight: 500, opacity: 0.9 }}>
+                                                        {photo.author ? `Por ${photo.author}` : 'Momento mágico'}
+                                                    </Typography>
+                                                </Box>
+                                            </Box>
                                         </Card>
                                     </MotionDiv>
                                 </Grid>
