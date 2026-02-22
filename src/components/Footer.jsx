@@ -50,10 +50,10 @@ const Footer = () => {
                 }} />
 
                 <MotionBox
-                    initial={{ x: '-200px' }}
+                    initial={{ x: '-120px' }}
                     animate={{
-                        x: '150vw',
-                        y: [0, -4, 0]
+                        x: '100vw',
+                        y: [0, -2, 0]
                     }}
                     transition={{
                         x: {
@@ -73,7 +73,7 @@ const Footer = () => {
                         height: '340px',
                         display: 'flex',
                         alignItems: 'center',
-                        bottom: '5%',
+
                     }}
                 >
                     <img
