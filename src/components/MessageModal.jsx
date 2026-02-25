@@ -39,17 +39,40 @@ const MessageModal = ({ open, onClose, onMessageAdded }) => {
         if (!author.trim() || !content.trim()) return;
 
         setIsSubmitting(true);
-        // Simulated API call delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
 
-        onMessageAdded({
-            id: Date.now(),
-            author: author.trim(),
-            content: content.trim(),
-            timestamp: new Date().toISOString()
-        });
+        try {
+            const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+            const response = await fetch(`${baseUrl}/messages/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    author: author.trim(),
+                    content: content.trim(),
+                }),
+            });
 
-        handleClose();
+            if (!response.ok) {
+                throw new Error('Error al enviar el mensaje');
+            }
+
+            const data = await response.json();
+
+            onMessageAdded({
+                id: data.id,
+                author: data.author,
+                content: data.content,
+                timestamp: data.timestamp
+            });
+
+            handleClose();
+        } catch (error) {
+            console.error("Error submitting message:", error);
+            alert("No se pudo enviar el mensaje. Inténtalo de nuevo.");
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (

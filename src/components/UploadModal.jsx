@@ -103,23 +103,70 @@ const UploadModal = ({ open, onClose, onUploadSuccess }) => {
         if (selectedFiles.length === 0 || !guestName.trim()) return;
 
         setIsUploading(true);
+        const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
         try {
-            // Simulated delay for each photo
-            for (let i = 0; i < selectedFiles.length; i++) {
-                await new Promise(resolve => setTimeout(resolve, 300));
+            // Step 1: Get presigned URLs
+            const urlResponse = await fetch(`${baseUrl}/photos/generate-upload-url`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    files: selectedFiles.map(file => ({
+                        file_name: file.name,
+                        file_type: file.type
+                    }))
+                })
+            });
 
+            if (!urlResponse.ok) throw new Error('Failed to get upload URLs');
+            const { items } = await urlResponse.json();
+
+            // Step 2: Upload files directly to S3
+            const uploadPromises = items.map(async (item, index) => {
+                const file = selectedFiles[index];
+                const uploadResponse = await fetch(item.url, {
+                    method: 'PUT',
+                    body: file,
+                    headers: { 'Content-Type': file.type }
+                });
+
+                if (!uploadResponse.ok) throw new Error(`Failed to upload ${file.name}`);
+
+                return {
+                    file_key: item.file_key,
+                    description: "", // Could be enhanced later
+                    uploader_name: guestName.trim()
+                };
+            });
+
+            const uploadedPhotosMetadata = await Promise.all(uploadPromises);
+
+            // Step 3: Confirm upload in backend
+            const confirmResponse = await fetch(`${baseUrl}/photos/confirm`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    photos: uploadedPhotosMetadata
+                })
+            });
+
+            if (!confirmResponse.ok) throw new Error('Failed to confirm upload');
+            const confirmData = await confirmResponse.json();
+
+            // Notify parent components
+            confirmData.items.forEach(photo => {
                 onUploadSuccess({
-                    id: Date.now() + i,
-                    url: previews[i],
-                    author: guestName,
+                    id: photo.id,
+                    url: photo.url,
+                    author: guestName.trim(),
                     timestamp: new Date().toISOString()
                 });
-            }
+            });
 
             handleClose();
         } catch (error) {
             console.error("Upload failed", error);
+            alert("Hubo un error al subir las fotos. Por favor intenta de nuevo.");
             setIsUploading(false);
         }
     };
