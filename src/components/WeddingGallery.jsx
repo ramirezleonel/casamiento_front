@@ -11,7 +11,7 @@ import { PhotoAlbum } from '@mui/icons-material';
 const MotionDiv = motion.div;
 
 const WeddingGallery = () => {
-    const { photos, addPhoto } = usePhotos();
+    const { photos, addPhoto, loading } = usePhotos();
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -91,7 +91,13 @@ const WeddingGallery = () => {
                     </Box>
                 </Box>
 
-                {photos.length > 0 ? (
+                {loading ? (
+                    <Box sx={{ textAlign: 'center', py: 10 }}>
+                        <Typography variant="h6" color="var(--primary-gold)">
+                            Cargando galería...
+                        </Typography>
+                    </Box>
+                ) : photos.length > 0 ? (
                     <Grid container spacing={3}>
                         <AnimatePresence>
                             {photos.slice(0, showQuantityPhotos).map((photo, index) => (

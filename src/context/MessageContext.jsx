@@ -1,19 +1,41 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const MessageContext = createContext();
 
 export const MessageProvider = ({ children }) => {
-    const [messages, setMessages] = useState([
-        { id: 1, author: 'Mamá de Karen', content: '¡Felicidades a los dos! Que sean siempre muy felices.', timestamp: new Date().toISOString() },
-        { id: 2, author: 'Amiga de karen', content: '¡Qué gran noticia! Les deseo lo mejor en esta nueva etapa.', timestamp: new Date().toISOString() },
-    ]);
+    const [messages, setMessages] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
+    const fetchMessages = async () => {
+        try {
+            setLoading(true);
+            const response = await fetch(`${baseUrl}/messages/`);
+            if (!response.ok) throw new Error('Failed to fetch messages');
+            const data = await response.json();
+
+            // Sort by timestamp descending
+            const sortedMessages = [...data].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            setMessages(sortedMessages);
+        } catch (error) {
+            console.error('Error fetching messages:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchMessages();
+    }, []);
 
     const addMessage = (newMessage) => {
         setMessages(prev => [newMessage, ...prev]);
     };
 
     return (
-        <MessageContext.Provider value={{ messages, addMessage }}>
+        <MessageContext.Provider value={{ messages, addMessage, loading, refreshMessages: fetchMessages }}>
             {children}
         </MessageContext.Provider>
     );

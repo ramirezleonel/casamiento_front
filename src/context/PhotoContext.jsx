@@ -1,20 +1,49 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const PhotoContext = createContext();
 
 export const PhotoProvider = ({ children }) => {
-    const [photos, setPhotos] = useState([
-        { id: 1, url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=2070&auto=format&fit=crop', author: 'Leo', timestamp: new Date().toISOString() },
-        { id: 2, url: 'https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=1974&auto=format&fit=crop', author: 'Karen', timestamp: new Date().toISOString() },
-        { id: 3, url: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=2070&auto=format&fit=crop', author: 'Boda', timestamp: new Date().toISOString() },
-    ]);
+    const [photos, setPhotos] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
+    const fetchPhotos = async () => {
+        try {
+            setLoading(true);
+            const response = await fetch(`${baseUrl}/photos/`);
+            if (!response.ok) throw new Error('Failed to fetch photos');
+            const data = await response.json();
+
+            // Map backend naming to frontend naming if needed
+            const formattedPhotos = data.map(photo => ({
+                id: photo.id,
+                url: photo.url,
+                author: photo.uploader_name || photo.author || 'Invitado',
+                timestamp: photo.created_at || photo.timestamp
+            }));
+
+            // Sort by timestamp descending
+            formattedPhotos.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            setPhotos(formattedPhotos);
+        } catch (error) {
+            console.error('Error fetching photos:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchPhotos();
+    }, []);
 
     const addPhoto = (newPhoto) => {
         setPhotos(prev => [newPhoto, ...prev]);
     };
 
     return (
-        <PhotoContext.Provider value={{ photos, addPhoto }}>
+        <PhotoContext.Provider value={{ photos, addPhoto, loading, refreshPhotos: fetchPhotos }}>
             {children}
         </PhotoContext.Provider>
     );

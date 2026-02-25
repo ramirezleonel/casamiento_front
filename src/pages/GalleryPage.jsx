@@ -11,7 +11,7 @@ import { TextField, InputAdornment } from '@mui/material';
 const MotionDiv = motion.div;
 
 const GalleryPage = () => {
-    const { photos, addPhoto } = usePhotos();
+    const { photos, addPhoto, loading } = usePhotos();
     const navigate = useNavigate();
     const [isLightboxOpen, setIsLightboxOpen] = useState(false);
     const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
@@ -100,66 +100,76 @@ const GalleryPage = () => {
                     />
                 </Box>
 
-                <Grid container spacing={3}>
-                    <AnimatePresence mode="popLayout">
-                        {filteredPhotos.map((photo, index) => (
-                            <Grid item xs={12} sm={6} md={4} lg={3} key={photo.id}>
-                                <MotionDiv
-                                    layout
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.9 }}
-                                    transition={{ duration: 0.3 }}
-                                >
-                                    <Card
-                                        onClick={() => openLightbox(index)}
-                                        sx={{
-                                            borderRadius: '16px',
-                                            overflow: 'hidden',
-                                            cursor: 'zoom-in',
-                                            boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
-                                            '&:hover img': {
-                                                transform: 'scale(1.05)',
-                                                transition: 'transform 0.5s ease'
-                                            }
-                                        }}
-                                    >
-                                        <Box sx={{ position: 'relative' }}>
-                                            <CardMedia
-                                                component="img"
-                                                height="350"
-                                                image={photo.url}
-                                                alt={`Wedding photo ${index}`}
-                                                sx={{ objectFit: 'cover' }}
-                                            />
-                                            <Box sx={{
-                                                position: 'absolute',
-                                                bottom: 0,
-                                                left: 0,
-                                                right: 0,
-                                                p: 2,
-                                                background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
-                                                color: 'white',
-                                                pointerEvents: 'none'
-                                            }}>
-                                                <Typography variant="body2" sx={{ fontWeight: 500, opacity: 0.9 }}>
-                                                    {photo.author ? `Por ${photo.author}` : 'Momentos'}
-                                                </Typography>
-                                            </Box>
-                                        </Box>
-                                    </Card>
-                                </MotionDiv>
-                            </Grid>
-                        ))}
-                    </AnimatePresence>
-                </Grid>
-
-                {filteredPhotos.length === 0 && (
+                {loading ? (
                     <Box sx={{ textAlign: 'center', py: 10 }}>
-                        <Typography variant="h6" color="text.secondary" sx={{ fontStyle: 'italic' }}>
-                            No se encontraron fotos de "{searchTerm}"
+                        <Typography variant="h6" color="var(--primary-gold)">
+                            Cargando galería...
                         </Typography>
                     </Box>
+                ) : (
+                    <>
+                        <Grid container spacing={3}>
+                            <AnimatePresence mode="popLayout">
+                                {filteredPhotos.map((photo, index) => (
+                                    <Grid item xs={12} sm={6} md={4} lg={3} key={photo.id}>
+                                        <MotionDiv
+                                            layout
+                                            initial={{ opacity: 0, scale: 0.9 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            exit={{ opacity: 0, scale: 0.9 }}
+                                            transition={{ duration: 0.3 }}
+                                        >
+                                            <Card
+                                                onClick={() => openLightbox(index)}
+                                                sx={{
+                                                    borderRadius: '16px',
+                                                    overflow: 'hidden',
+                                                    cursor: 'zoom-in',
+                                                    boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
+                                                    '&:hover img': {
+                                                        transform: 'scale(1.05)',
+                                                        transition: 'transform 0.5s ease'
+                                                    }
+                                                }}
+                                            >
+                                                <Box sx={{ position: 'relative' }}>
+                                                    <CardMedia
+                                                        component="img"
+                                                        height="350"
+                                                        image={photo.url}
+                                                        alt={`Wedding photo ${index}`}
+                                                        sx={{ objectFit: 'cover' }}
+                                                    />
+                                                    <Box sx={{
+                                                        position: 'absolute',
+                                                        bottom: 0,
+                                                        left: 0,
+                                                        right: 0,
+                                                        p: 2,
+                                                        background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
+                                                        color: 'white',
+                                                        pointerEvents: 'none'
+                                                    }}>
+                                                        <Typography variant="body2" sx={{ fontWeight: 500, opacity: 0.9 }}>
+                                                            {photo.author ? `Por ${photo.author}` : 'Momentos'}
+                                                        </Typography>
+                                                    </Box>
+                                                </Box>
+                                            </Card>
+                                        </MotionDiv>
+                                    </Grid>
+                                ))}
+                            </AnimatePresence>
+                        </Grid>
+
+                        {filteredPhotos.length === 0 && (
+                            <Box sx={{ textAlign: 'center', py: 10 }}>
+                                <Typography variant="h6" color="text.secondary" sx={{ fontStyle: 'italic' }}>
+                                    {searchTerm ? `No se encontraron fotos de "${searchTerm}"` : 'Aún no hay fotos. ¡Sé el primero en compartir una!'}
+                                </Typography>
+                            </Box>
+                        )}
+                    </>
                 )}
             </Container>
 

@@ -68,7 +68,7 @@ const MessageCard = ({ content, author, timestamp }) => {
 };
 
 const MessagesPage = () => {
-    const { messages, addMessage } = useMessages();
+    const { messages, addMessage, loading } = useMessages();
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
@@ -148,31 +148,42 @@ const MessagesPage = () => {
                     />
                 </Box>
 
-                {/* Messages Grid */}
-                <Grid container spacing={4}>
-                    <AnimatePresence mode="popLayout">
-                        {filteredMessages.map((msg, index) => (
-                            <Grid item xs={12} sm={6} lg={4} key={msg.id}>
-                                <MotionDiv
-                                    layout
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.9 }}
-                                    transition={{ duration: 0.4 }}
-                                >
-                                    <MessageCard {...msg} />
-                                </MotionDiv>
-                            </Grid>
-                        ))}
-                    </AnimatePresence>
-                </Grid>
-
-                {filteredMessages.length === 0 && (
-                    <Box sx={{ textAlign: 'center', py: 12 }}>
-                        <Typography variant="h6" sx={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>
-                            {searchTerm ? 'No se encontraron mensajes con ese criterio' : 'Todavía no hay mensajes. ¡Sé el primero en compartir uno!'}
+                {/* Loading State */}
+                {loading ? (
+                    <Box sx={{ display: 'flex', justifyContent: 'center', py: 12 }}>
+                        <Typography variant="h6" sx={{ color: 'var(--primary-gold)', display: 'flex', alignItems: 'center', gap: 2 }}>
+                            Cargando mensajes...
                         </Typography>
                     </Box>
+                ) : (
+                    <>
+                        {/* Messages Grid */}
+                        <Grid container spacing={4}>
+                            <AnimatePresence mode="popLayout">
+                                {filteredMessages.map((msg, index) => (
+                                    <Grid item xs={12} sm={6} lg={4} key={msg.id}>
+                                        <MotionDiv
+                                            layout
+                                            initial={{ opacity: 0, scale: 0.9 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            exit={{ opacity: 0, scale: 0.9 }}
+                                            transition={{ duration: 0.4 }}
+                                        >
+                                            <MessageCard {...msg} />
+                                        </MotionDiv>
+                                    </Grid>
+                                ))}
+                            </AnimatePresence>
+                        </Grid>
+
+                        {filteredMessages.length === 0 && (
+                            <Box sx={{ textAlign: 'center', py: 12 }}>
+                                <Typography variant="h6" sx={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                                    {searchTerm ? 'No se encontraron mensajes con ese criterio' : 'Todavía no hay mensajes. ¡Sé el primero en compartir uno!'}
+                                </Typography>
+                            </Box>
+                        )}
+                    </>
                 )}
             </Container>
 
