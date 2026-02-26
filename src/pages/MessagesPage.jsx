@@ -8,7 +8,7 @@ import MessageModal from '../components/MessageModal';
 
 const MotionDiv = motion.div;
 
-const MessageCard = ({ content, author, timestamp }) => {
+const MessageCard = ({ content, author, created_at }) => {
     return (
         <Card sx={{
             p: 4,
@@ -56,7 +56,7 @@ const MessageCard = ({ content, author, timestamp }) => {
                     {author}
                 </Typography>
                 <Typography variant="caption" sx={{ color: 'var(--text-muted)', display: 'block' }}>
-                    {new Date(timestamp).toLocaleDateString('es-AR', {
+                    {new Date(created_at).toLocaleDateString('es-AR', {
                         day: 'numeric',
                         month: 'long',
                         year: 'numeric'

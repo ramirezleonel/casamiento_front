@@ -63,7 +63,7 @@ const MessageModal = ({ open, onClose, onMessageAdded }) => {
                 id: data.id,
                 author: data.author,
                 content: data.content,
-                timestamp: data.timestamp
+                created_at: data.created_at
             });
 
             handleClose();

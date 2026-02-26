@@ -159,7 +159,7 @@ const UploadModal = ({ open, onClose, onUploadSuccess }) => {
                     id: photo.id,
                     url: photo.url,
                     author: guestName.trim(),
-                    timestamp: new Date().toISOString()
+                    created_at: new Date().toISOString()
                 });
             });
 

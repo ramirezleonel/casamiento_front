@@ -15,8 +15,8 @@ export const MessageProvider = ({ children }) => {
             if (!response.ok) throw new Error('Failed to fetch messages');
             const data = await response.json();
 
-            // Sort by timestamp descending
-            const sortedMessages = [...data].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            // Sort by created_at descending
+            const sortedMessages = [...data].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
             setMessages(sortedMessages);
         } catch (error) {
