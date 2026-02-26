@@ -127,7 +127,7 @@ const UploadModal = ({ open, onClose, onUploadSuccess }) => {
                 const uploadResponse = await fetch(item.url, {
                     method: 'PUT',
                     body: file,
-                    // headers: { 'Content-Type': file.type }
+                    headers: { 'Content-Type': file.type }
                 });
 
                 if (!uploadResponse.ok) throw new Error(`Failed to upload ${file.name}`);
