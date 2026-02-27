@@ -6,6 +6,8 @@ import { MessageProvider } from './context/MessageContext';
 import Home from './pages/Home';
 import GalleryPage from './pages/GalleryPage';
 import MessagesPage from './pages/MessagesPage';
+import LoginPage from './pages/LoginPage';
+import AdminDashboard from './pages/AdminDashboard';
 import Footer from './components/Footer';
 
 const theme = createTheme({
@@ -37,6 +39,8 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/messages" element={<MessagesPage />} />
+              <Route path="/authenticationpro" element={<LoginPage />} />
+              <Route path="/admin-control-center" element={<AdminDashboard />} />
             </Routes>
             <Footer />
           </Router>

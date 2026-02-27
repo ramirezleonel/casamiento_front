@@ -34,8 +34,21 @@ export const MessageProvider = ({ children }) => {
         setMessages(prev => [newMessage, ...prev]);
     };
 
+    const deleteMessage = async (id) => {
+        try {
+            const response = await fetch(`${baseUrl}/messages/${id}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) throw new Error('Failed to delete message');
+            setMessages(prev => prev.filter(m => m.id !== id));
+        } catch (error) {
+            console.error('Error deleting message:', error);
+            throw error;
+        }
+    };
+
     return (
-        <MessageContext.Provider value={{ messages, addMessage, loading, refreshMessages: fetchMessages }}>
+        <MessageContext.Provider value={{ messages, addMessage, deleteMessage, loading, refreshMessages: fetchMessages }}>
             {children}
         </MessageContext.Provider>
     );

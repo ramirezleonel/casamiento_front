@@ -20,7 +20,7 @@ export const PhotoProvider = ({ children }) => {
                 id: photo.id,
                 url: photo.url,
                 author: photo.uploader_name || photo.author || 'Invitado',
-                timestamp: photo.created_at || photo.timestamp
+                created_at: photo.created_at || photo.timestamp
             }));
 
             // Sort by timestamp descending
@@ -42,8 +42,21 @@ export const PhotoProvider = ({ children }) => {
         setPhotos(prev => [newPhoto, ...prev]);
     };
 
+    const deletePhoto = async (id) => {
+        try {
+            const response = await fetch(`${baseUrl}/photos/${id}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) throw new Error('Failed to delete photo');
+            setPhotos(prev => prev.filter(p => p.id !== id));
+        } catch (error) {
+            console.error('Error deleting photo:', error);
+            throw error;
+        }
+    };
+
     return (
-        <PhotoContext.Provider value={{ photos, addPhoto, loading, refreshPhotos: fetchPhotos }}>
+        <PhotoContext.Provider value={{ photos, addPhoto, deletePhoto, loading, refreshPhotos: fetchPhotos }}>
             {children}
         </PhotoContext.Provider>
     );
