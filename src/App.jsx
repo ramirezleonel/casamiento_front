@@ -40,7 +40,7 @@ function App() {
               <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/messages" element={<MessagesPage />} />
               <Route path="/authenticationpro" element={<LoginPage />} />
-              <Route path="/admin-control-center" element={<AdminDashboard />} />
+              <Route path="/admin-control" element={<AdminDashboard />} />
             </Routes>
             <Footer />
           </Router>

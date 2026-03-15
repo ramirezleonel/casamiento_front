@@ -27,12 +27,10 @@ const LoginPage = () => {
         setLoading(true);
         setError('');
 
-        // Simulación de login (Hardcoded por ahora)
-        // Puedes cambiar estos valores por los que prefieras
         setTimeout(() => {
             if (credentials.username === 'admin' && credentials.password === 'boda2026') {
                 sessionStorage.setItem('isAdmin', 'true');
-                navigate('/admin-control-center');
+                navigate('/admin-control');
             } else {
                 setError('Credenciales incorrectas');
                 setLoading(false);
