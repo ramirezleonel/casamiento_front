@@ -4,13 +4,15 @@ import { Box } from '@mui/material';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import weddingPhoto from '../assets/photos/foto_karen_leo.jpeg';
+import weddingPhoto from '../assets/photos/Karen&Leo-4831.jpg';
+import weddingPhoto2 from '../assets/photos/Karen&Leo-4760.jpg';
+import weddingPhoto3 from '../assets/photos/Karen&Leo-4840.jpg';
 
 const PhotoCarousel = () => {
     const images = [
         weddingPhoto,
-        "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=2070&auto=format&fit=crop",
+        weddingPhoto2,
+        weddingPhoto3,
     ];
 
     const settings = {
@@ -28,7 +30,6 @@ const PhotoCarousel = () => {
     return (
         <Box sx={{
             width: '100%',
-            maxWidth: '1000px',
             mx: 'auto',
             borderRadius: '20px',
             overflow: 'hidden',
@@ -36,7 +37,7 @@ const PhotoCarousel = () => {
         }}>
             <Slider {...settings}>
                 {images.map((img, index) => (
-                    <Box key={index} sx={{ height: { xs: '300px', md: '500px' }, position: 'relative' }}>
+                    <Box key={index} sx={{ height: { xs: '300px', md: '900px' }, position: 'relative' }}>
                         <img
                             src={img}
                             alt={`Wedding moment ${index + 1}`}

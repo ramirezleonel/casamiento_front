@@ -29,7 +29,7 @@ const GuestMessages = () => {
                             Mensajes de los invitados
                         </Typography>
                         <Typography variant="body1" sx={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>
-                            Deciles algo especial a los novios para este gran día.
+                            Dejá un mensaje para los novios en este gran día.
                         </Typography>
                     </Box>
                     <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'center' }}>
