@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, Typography, Paper } from '@mui/material';
+import { Box, Typography, Paper, IconButton } from '@mui/material';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { QRCodeSVG } from 'qrcode.react';
 import { Heart } from 'lucide-react';
 import TextGold from './TextGold';
@@ -52,8 +53,20 @@ const DonationQR = () => {
 
                 <TextGold value={"Leo"} fontSize={{ xs: '1rem', sm: '2rem' }} />
 
-                <Typography variant="caption" sx={{ color: 'var(--text-muted)', mb: 1 }}>
-                    Alias: leo.ramirez.mati.mp  <br /> Nombre: Leonel Matias Ramirez <br /> CVU: 0000003100020350649566
+                <Typography variant="caption" sx={{ color: 'var(--text-muted)', mb: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5 }}>
+                    <span style={{ display: 'flex', alignItems: 'center' }}>
+                        Alias: leo.ramirez.mati.mp
+                        <IconButton size="small" color="inherit" onClick={() => navigator.clipboard.writeText('leo.ramirez.mati.mp')} sx={{ ml: 0.5, p: 0.5 }}>
+                            <ContentCopyIcon sx={{ fontSize: '1rem' }} />
+                        </IconButton>
+                    </span>
+                    <span>Nombre: Leonel Matias Ramirez</span>
+                    <span style={{ display: 'flex', alignItems: 'center' }}>
+                        CVU: 0000003100020350649566
+                        <IconButton size="small" color="inherit" onClick={() => navigator.clipboard.writeText('0000003100020350649566')} sx={{ ml: 0.5, p: 0.5 }}>
+                            <ContentCopyIcon sx={{ fontSize: '1rem' }} />
+                        </IconButton>
+                    </span>
                 </Typography>
 
                 {/* <Box sx={{
@@ -72,8 +85,20 @@ const DonationQR = () => {
                 </Box> */}
 
                 <TextGold value={"Karen"} fontSize={{ xs: '1rem', sm: '2rem' }} />
-                <Typography variant="caption" sx={{ color: 'var(--text-muted)', mb: 3 }}>
-                    Alias: karen.ari.delpalacio  <br /> Nombre: Karen Ariadna del Palacio <br /> CVU: 0000003100054143537903
+                <Typography variant="caption" sx={{ color: 'var(--text-muted)', mb: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.5 }}>
+                    <span style={{ display: 'flex', alignItems: 'center' }}>
+                        Alias: karen.ari.delpalacio
+                        <IconButton size="small" color="inherit" onClick={() => navigator.clipboard.writeText('karen.ari.delpalacio')} sx={{ ml: 0.5, p: 0.5 }}>
+                            <ContentCopyIcon sx={{ fontSize: '1rem' }} />
+                        </IconButton>
+                    </span>
+                    <span>Nombre: Karen Ariadna del Palacio</span>
+                    <span style={{ display: 'flex', alignItems: 'center' }}>
+                        CVU: 0000003100054143537903
+                        <IconButton size="small" color="inherit" onClick={() => navigator.clipboard.writeText('0000003100054143537903')} sx={{ ml: 0.5, p: 0.5 }}>
+                            <ContentCopyIcon sx={{ fontSize: '1rem' }} />
+                        </IconButton>
+                    </span>
                 </Typography>
 
                 <Typography variant="caption" sx={{ color: 'var(--text-muted)', mb: 3 }}>
